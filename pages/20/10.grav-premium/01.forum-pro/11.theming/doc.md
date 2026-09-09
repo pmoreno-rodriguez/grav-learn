@@ -111,6 +111,54 @@ The main templates are:
 
 Prefer custom properties over template overrides wherever you can. Most visual changes people reach for a template override to make are a `--forum-*` property away.
 
+## Extending post rendering
+
+Every body the forum renders goes through one Markdown parser and then a sanitizer: posts, private messages, signatures, announcements and the excerpt in a notification email. Two hooks let a plugin take part.
+
+**`onMarkdownInitialized`** is Grav's own event and fires when the forum's parser is built, so a plugin can register block or inline handlers exactly as it would for page content. Forum bodies pass a `page` of `null`.
+
+**`onForumProRenderBody`** is Forum Pro's event. It fires after the parse and before the sanitizer with three values:
+
+| Key | Contains |
+|---|---|
+| `markdown` | The source, as the member wrote it. Read it; changing it here has no effect. |
+| `html` | The parsed body. Replace it and the replacement is what gets sanitized and stored. |
+| `context` | What is being rendered: `kind` (`post`, `message`, `signature`, `announcement` or `email_excerpt`) plus the ids the caller knows (`post_id`, `topic_id`, `category_id`, `user_id`, `message_id`, `announcement_id`). Imports add `import: xenforo` or `discourse`. |
+
+The sanitizer still runs on whatever a listener returns, so its allowlist holds: paragraphs, lists, headings, tables, code, links and images survive; custom classes, inline styles and scripts do not. A listener can reshape a post but never smuggle markup past the forum.
+
+A plugin that turns a `Key: Value` block at the top of a post into a table:
+
+```php
+public static function getSubscribedEvents(): array
+{
+    return ['onForumProRenderBody' => ['onForumProRenderBody', 0]];
+}
+
+public function onForumProRenderBody(Event $event): void
+{
+    if (($event['context']['kind'] ?? '') !== 'post') {
+        return;
+    }
+
+    $event['html'] = preg_replace_callback(
+        '~<pre><code>((?:[A-Z][\w ]+: .*\n?)+)</code></pre>~',
+        static function (array $m): string {
+            $rows = '';
+            foreach (explode("\n", trim($m[1])) as $line) {
+                [$key, $value] = array_pad(explode(':', $line, 2), 2, '');
+                $rows .= '<tr><th>' . htmlspecialchars(trim($key)) . '</th><td>' . htmlspecialchars(trim($value)) . '</td></tr>';
+            }
+
+            return '<table>' . $rows . '</table>';
+        },
+        $event['html']
+    );
+}
+```
+
+Rendered HTML is stored with each post, so a new listener applies to posts written from then on. Run [`rerender`](../cli#rerender) to apply it to the existing ones, then `reindex` so search sees the same text.
+
 ## Accessibility
 
 - **Focus moves to new content** after in-page navigation and after live inserts, so screen readers announce where the reader landed instead of leaving them stranded at the top of a stale page.

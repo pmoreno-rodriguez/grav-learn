@@ -59,7 +59,7 @@ This drops and repopulates the search index from the posts table. It is safe to 
 
 ## Re-rendering stored posts
 
-Search indexes rendered post text, so a change to the text pipeline (a new `codesh` version, a Markdown setting, a mention-rendering fix) can leave the index and the display out of step with each other. Re-render, then reindex:
+Search indexes rendered post text, so a change to the text pipeline (a new `codesh` version, a Markdown setting, a mention-rendering fix, a plugin listening to `onForumProRenderBody`) can leave the index and the display out of step with each other. Re-render, then reindex:
 
 ```bash
 bin/plugin forum-pro rerender

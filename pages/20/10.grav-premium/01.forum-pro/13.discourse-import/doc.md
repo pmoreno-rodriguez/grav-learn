@@ -135,7 +135,9 @@ You will probably also want a pass through **Admin → Forum → Tags** to merge
 
 ## Importing from something else
 
-Discourse is the only source shipped today, but the importer sits on a **general import layer**: id mapping for idempotency, a Markdown conversion pipeline, password-hash adapters and resumable file rehosting are all source-agnostic. Adding a new platform is mostly a matter of teaching it to read a different export format.
+Coming from XenForo? There is a [XenForo importer](../xenforo-import) with the same guarantees: working passwords, idempotent re-runs, files adopted from the install's own folders.
+
+Both importers sit on a **general import layer**: id mapping for idempotency, a Markdown conversion pipeline, password-hash adapters and resumable file rehosting are all source-agnostic. Adding a new platform is mostly a matter of teaching it to read a different export format.
 
 **Talk to us about an importer for your platform.** Email [premium@getgrav.org](mailto:premium@getgrav.org) with what you are running and what an export looks like, and we will tell you honestly what is involved. If your platform is a common one, you are probably not the only person asking.
 

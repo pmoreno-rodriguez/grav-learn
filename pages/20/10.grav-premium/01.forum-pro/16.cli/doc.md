@@ -25,6 +25,7 @@ bin/plugin forum-pro <command> [options]
 | `rerender` | Re-renders stored posts through the text pipeline | Yes |
 | `integrity` | Read-only consistency report | Yes, read-only |
 | `import-discourse` | Imports a Discourse backup | Use maintenance mode |
+| `import-xenforo` | Imports a XenForo 2 dump and its file folders | Use maintenance mode |
 | `files-sync` | Pushes local blobs to S3/R2 | Yes, idempotent |
 | `avatars-sync` | Adopts legacy avatars into blob storage | Yes, idempotent |
 | `ai-scan` | Runs the AI spam review once | Yes |
@@ -95,7 +96,7 @@ Safe on a live forum. Search results are simply incomplete while it runs.
 bin/plugin forum-pro rerender
 ```
 
-Re-renders every stored post through the Markdown and text pipeline. Run it after a change that affects how posts are rendered: a new `codesh` version, a Markdown setting change, or a mention-rendering fix.
+Re-renders every stored post through the Markdown and text pipeline, mention links included. Run it after a change that affects how posts are rendered: a new `codesh` version, a Markdown setting change, a mention-rendering fix, or a plugin that has started listening to [`onForumProRenderBody`](../theming#extending-post-rendering). Rendered HTML is stored with the post, so a new listener only reaches existing posts through this command.
 
 Follow it with `reindex`, since search indexes rendered text.
 
@@ -123,6 +124,26 @@ bin/plugin forum-pro import-discourse backup.sql.gz \
 | `--delay-ms` | Milliseconds between file downloads |
 
 Idempotent and resumable. See [Migrating from Discourse](../discourse-import) for the full guide.
+
+## `import-xenforo`
+
+```bash
+bin/plugin forum-pro import-xenforo dump.sql.gz \
+    --source-url https://forum.example.org \
+    --xf-root /path/to/xenforo
+```
+
+| Option | Purpose |
+|---|---|
+| `--source-url` | The old forum's base URL including any subfolder, for link rewriting |
+| `--xf-root` | The XenForo install; `internal_data/attachments` and `data/avatars` are read from it |
+| `--attachments-dir`, `--avatars-dir` | Override either folder individually |
+| `--skip-files` | Data only, no attachments or avatars |
+| `--prefixes tag|title|skip` | Thread prefixes as tags (default), in the title, or dropped |
+| `--skip-pms` | Do not import conversations |
+| `--default-section` | Section title for forums with no top-level category |
+
+Reads a plain `mysqldump` or phpMyAdmin export, gzipped or not, without a MySQL server. Idempotent and resumable. See [Migrating from XenForo](../xenforo-import) for the full guide, including how reactions map onto yours and how to read the report.
 
 ## `files-sync`
 

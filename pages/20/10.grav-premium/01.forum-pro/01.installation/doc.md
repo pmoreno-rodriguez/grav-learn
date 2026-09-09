@@ -123,6 +123,20 @@ Three rules make this safe:
 2. **`/forum` keeps working** when no mount page exists.
 3. **A home-mounted forum coexists** with the rest of your site. Your blog, your docs and your landing pages are unaffected.
 
+To mount at the site root, make the forum page Grav's home and tell the plugin the route is empty:
+
+```yaml
+# user/config/system.yaml
+home:
+  alias: /forum          # the folder of your Forum page
+
+# user/config/plugins/forum-pro.yaml
+frontend:
+  route: ''
+```
+
+Categories then live at `/general-discussion`, topics at `/general-discussion/some-title-t123`, and the mount page's own slug (`/forum`) redirects to `/`. This is the natural shape for a forum that is taking over the hostname of a [XenForo install](../xenforo-import#mounting-at-the-old-address).
+
 ## Reserved routes
 
 With `auth.enabled` (the default), Forum Pro serves its own account system under routes reserved beneath the forum root:

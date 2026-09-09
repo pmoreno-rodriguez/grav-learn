@@ -139,6 +139,8 @@ reactions:
   #   rocket: "🚀"
 ```
 
+Types are just names: add `wow`, `sad` and `angry` with emoji and the picker offers six. Set them up before a [XenForo import](../xenforo-import#reactions) and XenForo's reactions come across one for one.
+
 ### `attachments`
 
 ```yaml

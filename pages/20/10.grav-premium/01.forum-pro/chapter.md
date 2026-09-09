@@ -3,7 +3,7 @@ title: Forum Pro
 template: chapter
 taxonomy:
     category: docs
-description: A native, database-backed community forum for Grav 2.0. Members, topics, reactions, private messages, notifications, live updates, moderation, spam defense, search and a Discourse importer, all running inside your own Grav site.
+description: A native, database-backed community forum for Grav 2.0. Members, topics, reactions, private messages, notifications, live updates, moderation, spam defense, search and importers for Discourse and XenForo, all running inside your own Grav site.
 ---
 
 **Forum Pro** is a complete, self-hosted discussion platform that runs inside your Grav site. It is not an iframe, not a hosted widget and not a subscription. Forum pages are ordinary Grav pages: they inherit your theme, live at any route you choose, are indexed by search engines, and every post is stored in a database you own.
@@ -44,7 +44,7 @@ None of these are required. Forum Pro degrades cleanly when they are absent: wit
 - **Search** over published posts, permission-filtered, using either a built-in engine or YetiSearch Pro.
 - **Live updates** through the `sync` plugin, with Mercure push or automatic polling fallback.
 - **Article comments** that turn any Grav page into a commentable article backed by a real forum topic.
-- **A Discourse importer** that brings members (with working passwords), content, history and files across in one command.
+- **Discourse and XenForo importers** that bring members (with working passwords), content, history and files across in one command.
 
 ## Where to start
 
@@ -52,4 +52,4 @@ None of these are required. Forum Pro degrades cleanly when they are absent: wit
 2. [Configuration](../forum-pro/configuration) is the complete reference for every config block.
 3. [Administration](../forum-pro/administration) walks through the Forum area in Admin Next.
 
-If you are moving an existing community across, read [Migrating from Discourse](../forum-pro/discourse-import) before you do anything else. The importer is idempotent, but planning the cutover is easier before you start than after.
+If you are moving an existing community across, read [Migrating from Discourse](../forum-pro/discourse-import) or [Migrating from XenForo](../forum-pro/xenforo-import) before you do anything else. The importers are idempotent, but planning the cutover is easier before you start than after.
