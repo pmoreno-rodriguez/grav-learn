@@ -604,7 +604,7 @@ Copy the HTML code from the template's home page, starting at `<html>` and endin
 
 Now, move all the HTML theme assets (images, CSS, JS) into your theme folder. You can keep the existing theme folder structure, or change it.
 
-Create a `pages/01.home/home.md` empty file. Now point your browser to yoursite.com/home: it should show up the content, but the CSS, JS and images will not be loaded, probably because the theme has them hardcoded as `/img/*` or `/css/*` links.
+Create a `pages/01.home/home.md` empty file. Now point your browser to my-site.example/home: it should show up the content, but the CSS, JS and images will not be loaded, probably because the theme has them hardcoded as `/img/*` or `/css/*` links.
 
 #### Adding the correct asset links
 
@@ -756,15 +756,15 @@ Bots get smarter all the time, but they tend to forego trying to answer the same
 
 #### Problem:
 
-You've setup a subdomain, `dev.yourdomain.com`, as a development site to preview what you're working on before publishing changes to `yourdomain.com`, and want to disallow search indexers from crawling it while keeping the production site visible in search results.
+You've setup a subdomain, `dev.my-site.example`, as a development site to preview what you're working on before publishing changes to `my-site.example`, and want to disallow search indexers from crawling it while keeping the production site visible in search results.
 
 #### Solution:
 
 While you should password-protect your development site to really keep it private, sometimes it's sufficient, and just more practical, to simply disallow search engine indexers from crawling your site. Luckily, Grav can handle pages in txt format just as it does html, so we can use [environment configurations](/17/advanced/environment-config) and twig templates to complete the job.
 
-First, let's create a configuration file `site.yaml` that will tell our template that `dev.yourdomain.com` is a development environment.
+First, let's create a configuration file `site.yaml` that will tell our template that `dev.my-site.example` is a development environment.
 
-`/user/[dev.yourdomain.com]/config/site.yaml`:
+`/user/[dev.my-site.example]/config/site.yaml`:
 
     environment: dev
 
